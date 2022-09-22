@@ -1,14 +1,14 @@
 'user strict';
-var dbConn = require('./../../config/db.config');
+var dbConn = require('../../config/db.config');
 
 //ResturantItem object create
 var ResturantItem = function(resturantItem){
     this.name     = resturantItem.first_name;
-    this.last_name      = resturantItem.last_name;
-    this.description          = resturantItem.email;
-    this.image          = resturantItem.phone;
-    this.quantity   = resturantItem.organization;
-    this.price    = resturantItem.designation;
+
+    this.description          = resturantItem.description;
+    this.image          = resturantItem.image;
+    this.quantity   = resturantItem.quantity;
+    this.price    = resturantItem.price;
     this.created_at     = new Date();
     this.updated_at     = new Date();
 };
