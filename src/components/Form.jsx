@@ -41,16 +41,16 @@ const Form = ({ toastie }) => {
                         placeholder="Some Cute Text" rows="12">
                     </textarea>
                 </div>
-                <button onClick={toUpperCase} className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <button disabled={text.length === 0} onClick={toUpperCase} className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
                     To Upper Case
                 </button>
-                <button onClick={toLowerCase} className="ml-8 bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <button disabled={text.length === 0} onClick={toLowerCase} className="ml-8 bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
                     To Lower Case
                 </button>
-                <button onClick={copyText} className="ml-8 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <button disabled={text.length === 0} onClick={copyText} className="ml-8 bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
                     Copy to Clipboard
                 </button>
-                <button onClick={clearText} className="ml-8 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <button disabled={text.length === 0} onClick={clearText} className="ml-8 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
                     Clear Text
                 </button>
 
@@ -58,7 +58,7 @@ const Form = ({ toastie }) => {
             <div className="bg-white dark:text-gray-700 dark:bg-gray-900  shadow-md px-8 pt-6 pb-8 ">
                 <h2 className="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                     Word Statistics</h2>
-                <p className="mb-3 text-gray-500 dark:text-gray-400">Total {text.length > 0 ? text.split(" ").length : 0} words or {text.length} characters</p>
+                <p className="mb-3 text-gray-500 dark:text-gray-400">Total {text.length > 0 ? text.split(" ").filter((el)=>{return el.length!=0}).length : 0} words or {text.length} characters</p>
                 <p className="mb-3 text-gray-500 dark:text-gray-400">Can be read in {text.split(" ").length * 0.008} minutes</p>
             </div>
             <div className="bg-white shadow-md  px-8 pt-6 pb-8   border shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
