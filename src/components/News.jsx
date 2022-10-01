@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
+import Spinner from './Spinner';
 export class News extends Component {
 
   constructor() {
@@ -7,30 +8,27 @@ export class News extends Component {
     this.state = {
       articles: [],
       page: 1,
-      pageSize : 15,
-      loading: false
+      pageSize: 15,
+      loading: true
     };
   }
   async componentDidMount() {
-    // let data = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=cfe1199c07ab49a580a4b5c98e338a13&pageSize=${this.state.pageSize}&page=${this.state.page}`);
-    // let parsedData = await data.json();
-    // this.setState({
-    //   articles: parsedData.articles,
-    //   page: this.state.page,
-    //   pageSize: this.state.pageSize,
-    //   totalArticles: parsedData.totalResults
-    // });
     this.getArticles(this.state.page, this.state.pageSize);
   }
   async getArticles(page, pageSize) {
-    let data = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=cfe1199c07ab49a580a4b5c98e338a13&pageSize=${pageSize}&page=${page}`);
+    let data = await fetch(`http://localhost:3001/news?_page=${page}&_limit=${pageSize}`);
+
+    // let data = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=cfe1199c07ab49a580a4b5c98e338a13&pageSize=${pageSize}&page=${page}`);
     let parsedData = await data.json();
+
     this.setState({
-      articles: parsedData.articles,
+      articles: parsedData,
       page: page,
       pageSize: pageSize,
-      totalArticles: parsedData.totalResults
+      loading: false,
+      totalArticles: data.headers.get('X-Total-Count')
     });
+
   }
   onNext = () => {
     this.getArticles(this.state.page + 1, this.state.pageSize);
@@ -38,24 +36,29 @@ export class News extends Component {
   onPrev = () => {
     this.getArticles(this.state.page - 1, this.state.pageSize);
   }
-  setPageSize(e){
+  setPageSize(e) {
     this.getArticles(this.state.page, e.target.value);
   }
   render() {
+
     return (
       <div className="container my-10 px-6 mx-auto">
 
         <div className="mb-32 text-gray-800 text-right">
-          <select onChange={(e)=>this.setPageSize(e)}  className="px-4 py-3 my-5 rounded-full">
+          <select onChange={(e) => this.setPageSize(e)} className="px-4 py-3 my-5 rounded-full">
             <option value="15">15</option>
             <option value="30">30</option>
             <option value="50">50</option>
           </select>
           <div className="grid lg:grid-cols-3 gap-6 xl:gap-x-12">
-            {
-              this.state.articles.map((news, index) => {
-                return (<NewsItem key={index} title={news.title} description={news.description} urlToImage={news.urlToImage} publishedAt={news.publishedAt} author={news.author} newsId={index} />)
-              })
+            {this.state.loading ? (
+              <Spinner />
+             ) :
+              (
+                this.state.articles.map((news, index) => {
+                  return (<NewsItem key={index} title={news.title} description={news.description} urlToImage={news.urlToImage} publishedAt={news.publishedAt} author={news.author} newsId={index} />)
+                })
+              )
             }
           </div>
           <div className="inline-flex">
